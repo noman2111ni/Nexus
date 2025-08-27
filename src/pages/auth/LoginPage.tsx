@@ -105,7 +105,9 @@ export const LoginPage: React.FC = () => {
               </div>
             </div>
             
-            <Input
+           <div className='w-'>
+             <Input
+             className=''
               label="Email address"
               type="email"
               value={email}
@@ -114,6 +116,7 @@ export const LoginPage: React.FC = () => {
               fullWidth
               startAdornment={<User size={18} />}
             />
+           </div>
             
             <Input
               label="Password"
