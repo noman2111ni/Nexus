@@ -1,38 +1,62 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { OtpVerify } from "../../components/ui/OtpVerify";
-import { Button } from "../../components/ui/Button";
+import { OtpVerify } from "./OtpVerify"; // import your component
 
-export const VerifyOtpPage: React.FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+export const OtpPage: React.FC = () => {
+  const [otpValue, setOtpValue] = useState("");
 
-  const handleComplete = (otp: string) => {
-    if (otp === "123456") {
-      navigate("/dashboard/entrepreneur"); // Dummy redirect
-    } else {
-      setError("Invalid OTP, please try again.");
-    }
+  const handleOtpComplete = (otp: string) => {
+    setOtpValue(otp);
+    console.log("OTP entered:", otp);
+    // ✅ Call API or verification logic here
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg p-8 w-96 text-center">
-        <h2 className="text-2xl font-bold mb-4">Verify OTP</h2>
-        <p className="text-gray-600 mb-4">
-          Enter the 6-digit OTP (hint: 123456)
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 px-4">
+      <div className="max-w-md w-full bg-white shadow-lg rounded-2xl p-8 border border-gray-100">
+        {/* Logo / Brand */}
+        <div className="flex justify-center mb-6">
+          <div className="w-12 h-12 flex items-center justify-center bg-indigo-600 text-white rounded-full font-bold text-lg">
+            LOGO
+          </div>
+        </div>
+
+        {/* Heading */}
+        <h1 className="text-2xl font-semibold text-gray-900 text-center">
+          Verify your account
+        </h1>
+        <p className="text-gray-500 text-center mt-2">
+          We’ve sent a 6-digit verification code to your email/phone.
         </p>
 
-        {error && <p className="text-red-500 mb-2">{error}</p>}
+        {/* OTP Component */}
+        <div className="mt-6 flex justify-center">
+          <OtpVerify length={6} onComplete={handleOtpComplete} />
+        </div>
 
-        <OtpVerify length={6} onComplete={handleComplete} />
+        {/* Action Buttons */}
+        <div className="mt-8 space-y-4">
+          <button
+            onClick={() => alert("Verifying OTP: " + otpValue)}
+            disabled={otpValue.length !== 6}
+            className={`w-full py-3 rounded-lg font-medium transition ${
+              otpValue.length === 6
+                ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                : "bg-gray-300 text-gray-600 cursor-not-allowed"
+            }`}
+          >
+            Verify Code
+          </button>
 
-        <Button
-          className="mt-6 w-full"
-          onClick={() => handleComplete("123456")}
-        >
-          Dummy Auto-Verify
-        </Button>
+          <p className="text-center text-sm text-gray-500">
+            Didn’t receive the code?{" "}
+            <button
+              onClick={() => alert("Resend code")}
+              className="text-indigo-600 font-medium hover:underline"
+            >
+              Resend
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
