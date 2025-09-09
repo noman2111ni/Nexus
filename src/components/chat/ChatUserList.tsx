@@ -23,11 +23,11 @@ export const ChatUserList: React.FC<ChatUserListProps> = ({ conversations }) => 
   };
 
   return (
-    <div className="bg-white border-r border-gray-200 w-full md:w-64 overflow-y-auto">
+    <div className="bg-white border-r border-gray-200 w-full h-full md:w-62 overflow-y-auto">
       <div className="py-4">
         <h2 className="px-4 text-lg font-semibold text-gray-800 mb-4">Messages</h2>
         
-        <div className="space-y-1">
+        <div className="space-y-">
           {conversations.length > 0 ? (
             conversations.map(conversation => {
               // Get the other participant (not the current user)
@@ -55,7 +55,7 @@ export const ChatUserList: React.FC<ChatUserListProps> = ({ conversations }) => 
                     alt={otherUser.name}
                     size="md"
                     status={otherUser.isOnline ? 'online' : 'offline'}
-                    className="mr-3 flex-shrink-0"
+                    className="mr-2 flex-shrink-0 w-10 h-10"
                   />
                   
                   <div className="flex-1 min-w-0">

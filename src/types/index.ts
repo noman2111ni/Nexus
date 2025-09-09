@@ -1,18 +1,21 @@
-export type UserRole = 'entrepreneur' | 'investor';
+// Roles
+export type UserRole = "entrepreneur" | "investor";
 
+// Base User
 export interface User {
   id: string;
   name: string;
   email: string;
   role: UserRole;
-  avatarUrl: string;
-  bio: string;
+  avatarUrl?: string;
+  bio?: string;
   isOnline?: boolean;
-  createdAt: string;
+  createdAt?: string;
 }
 
+// Entrepreneur extends User
 export interface Entrepreneur extends User {
-  role: 'entrepreneur';
+  role: "entrepreneur";
   startupName: string;
   pitchSummary: string;
   fundingNeeded: string;
@@ -22,8 +25,9 @@ export interface Entrepreneur extends User {
   teamSize: number;
 }
 
+// Investor extends User
 export interface Investor extends User {
-  role: 'investor';
+  role: "investor";
   investmentInterests: string[];
   investmentStage: string[];
   portfolioCompanies: string[];
@@ -32,6 +36,7 @@ export interface Investor extends User {
   maximumInvestment: string;
 }
 
+// Chat
 export interface Message {
   id: string;
   senderId: string;
@@ -48,15 +53,17 @@ export interface ChatConversation {
   updatedAt: string;
 }
 
+// Collaboration Requests
 export interface CollaborationRequest {
   id: string;
   investorId: string;
   entrepreneurId: string;
   message: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: "pending" | "accepted" | "rejected";
   createdAt: string;
 }
 
+// Documents
 export interface Document {
   id: string;
   name: string;
@@ -68,6 +75,7 @@ export interface Document {
   ownerId: string;
 }
 
+// Auth Context
 export interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role: UserRole) => Promise<void>;
@@ -79,3 +87,35 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
 }
+
+// Calendar System
+export interface AvailabilitySlot {
+  id: string;
+  userId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface Meeting {
+  id: string;
+  title: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  entrepreneurId: string;
+  investorId: string;
+  status: "pending" | "accepted" | "declined";
+}
+
+// types.ts
+export interface Transaction {
+  [x: string]: string | number | Date;
+  id: string;
+  type: "deposit" | "withdraw" | "transfer" | "funding";
+  amount: number;
+  sender: UserRole | "system";
+  receiver: UserRole | "system";
+  status: "success" | "failed";
+}
+

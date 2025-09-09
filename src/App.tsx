@@ -25,9 +25,12 @@ import { DocumentsPage } from './pages/documents/DocumentsPage';
 import { SettingsPage } from './pages/settings/SettingsPage';
 import { HelpPage } from './pages/help/HelpPage';
 import { DealsPage } from './pages/deals/DealsPage';
-
 // Chat Pages
 import { ChatPage } from './pages/chat/ChatPage';
+import { CalendarPage } from './pages/calender/CalendarPage';
+import { DocumentChamber } from './pages/documents/DocumentChamber';
+import PaymentsModule from './pages/Payment/PaymentsModule';
+
 
 function App() {
   return (
@@ -54,6 +57,7 @@ function App() {
           <Route path="/investors" element={<DashboardLayout />}>
             <Route index element={<InvestorsPage />} />
           </Route>
+
           
           <Route path="/entrepreneurs" element={<DashboardLayout />}>
             <Route index element={<EntrepreneursPage />} />
@@ -62,13 +66,19 @@ function App() {
           <Route path="/messages" element={<DashboardLayout />}>
             <Route index element={<MessagesPage />} />
           </Route>
-          
+          <Route path="/calender" element={<DashboardLayout />}>
+            <Route index element={<CalendarPage />} />
+          </Route>
           <Route path="/notifications" element={<DashboardLayout />}>
             <Route index element={<NotificationsPage />} />
           </Route>
           
           <Route path="/documents" element={<DashboardLayout />}>
             <Route index element={<DocumentsPage />} />
+            <Route path="/documents/upload"  element={<DocumentChamber/>} />
+          </Route>
+          <Route path='/payments' element={<DashboardLayout />}>
+            <Route index element={<PaymentsModule />} />
           </Route>
           
           <Route path="/settings" element={<DashboardLayout />}>

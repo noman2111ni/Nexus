@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Users,
-  Bell,
-  Calendar as CalendarIcon,
-  TrendingUp,
-  AlertCircle,
-  PlusCircle,
-} from "lucide-react";
+import { Users, Bell, TrendingUp, AlertCircle } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { getRequestsForEntrepreneur } from "../../data/collaborationRequests";
 import { investors } from "../../data/users";
@@ -16,41 +9,19 @@ import { CollaborationRequestCard } from "../../components/collaboration/Collabo
 import { InvestorCard } from "../../components/investor/InvestorCard";
 
 // UI components
-import { Button } from "../../components/ui/Button";
 import { Card, CardBody, CardHeader } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
-import { MeetingCalendar } from "../../components/calender/MeetingCalendar";
 
 export const EntrepreneurDashboard: React.FC = () => {
   const { user } = useAuth();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [collaborationRequests, setCollaborationRequests] = useState<any[]>([]);
-  const [recommendedInvestors] = useState(
-    investors.slice(0, 3)
-  );
-
-  // Calendar state
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [meetings, setMeetings] = useState<any[]>([]);
-  const calendarRef = useRef<HTMLDivElement>(null);
+  const [recommendedInvestors] = useState(investors.slice(0, 3));
 
   useEffect(() => {
     if (user) {
       const requests = getRequestsForEntrepreneur(user.id);
       setCollaborationRequests(requests);
     }
-
-    // outside click close
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        calendarRef.current &&
-        !calendarRef.current.contains(e.target as Node)
-      ) {
-        setShowCalendar(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [user]);
 
   const handleRequestStatusUpdate = (
@@ -77,48 +48,13 @@ export const EntrepreneurDashboard: React.FC = () => {
             👋 Welcome, {user.name}
           </h1>
           <p className="text-gray-600">
-            Here's your startup's activity and meetings overview
+            Here's your startup's activity overview
           </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* Calendar Button */}
-          <button
-            onClick={() => setShowCalendar(!showCalendar)}
-            className="p-2 rounded-full border bg-white hover:bg-gray-50 shadow-sm"
-          >
-            <CalendarIcon size={20} className="text-gray-700" />
-          </button>
-
-          {/* Find Investors */}
-          <Link to="/investors">
-            <Button leftIcon={<PlusCircle size={18} />}>Find Investors</Button>
-          </Link>
-
-          {/* Calendar Popup */}
-          {showCalendar && (
-            <div
-              ref={calendarRef}
-              className="absolute top-20 right-8 bg-white shadow-2xl rounded-2xl p-4 z-50"
-              style={{ width: "420px", height: "450px" }}
-            >
-              <MeetingCalendar
-                meetings={meetings}
-                onAddMeeting={(m) => setMeetings([...meetings, m])}
-                onAddAvailability={(slot) =>
-                  console.log("Availability added:", slot)
-                }
-                onDeleteMeeting={(id) =>
-                  setMeetings(meetings.filter((meeting) => meeting.id !== id))
-                }
-              />
-            </div>
-          )}
         </div>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
         {/* Pending */}
         <Card className="bg-primary-50 border border-primary-200 shadow-sm hover:shadow-md transition">
           <CardBody className="flex items-center gap-4">
@@ -152,23 +88,6 @@ export const EntrepreneurDashboard: React.FC = () => {
                     (req) => req.status === "accepted"
                   ).length
                 }
-              </h3>
-            </div>
-          </CardBody>
-        </Card>
-
-        {/* Meetings */}
-        <Card className="bg-accent-50 border border-accent-200 shadow-sm hover:shadow-md transition">
-          <CardBody className="flex items-center gap-4">
-            <div className="p-3 bg-accent-100 rounded-full">
-              <CalendarIcon size={22} className="text-accent-700" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-accent-700">
-                Upcoming Meetings
-              </p>
-              <h3 className="text-2xl font-bold text-accent-900">
-                {meetings.length}
               </h3>
             </div>
           </CardBody>
