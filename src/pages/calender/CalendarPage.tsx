@@ -115,33 +115,24 @@ export const CalendarPage: React.FC = () => {
         </p>
 
           <FullCalendar
-  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-  initialView="timeGridWeek"
-  selectable
-  editable
-  select={handleDateSelect}
-  events={events}
-  eventClick={handleEventClick}
-  headerToolbar={{
-    left: "prev,next today",
-    // center: "title",
-    right: "dayGridMonth,timeGridWeek,timeGridDay",
-  }}
-  
-  height="auto"
-  contentHeight="auto"
-  nowIndicator
-  eventColor="#3B82F6"       // Tailwind blue-600
-  eventTextColor="#FFFFFF"   // White text
-  dayHeaderClassNames={() =>
-    "bg-gray-100 text-gray-700 font-semibold text-xs sm:text-sm py-2"
-  }
-  slotLabelClassNames={() => "text-xs sm:text-sm text-gray-500"}
-  eventClassNames={() =>
-    "rounded-md shadow-sm px-1 sm:px-2 py-1 text-xs sm:text-sm"
-  }
-/>
-
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            selectable
+            editable
+            select={handleDateSelect}
+            events={events}
+            eventClick={handleEventClick}
+            headerToolbar={{
+              left: "prev,next today",
+              // center: "title",  
+              right: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            height={"auto"}
+            contentHeight={"auto"}
+            eventColor={"#3B82F6"}
+            eventTextColor={"#FFFFFF"}
+            nowIndicator
+          />
         {/* Demo Buttons */}
         <div className="mt-4 flex flex-wrap gap-2">
           <button
