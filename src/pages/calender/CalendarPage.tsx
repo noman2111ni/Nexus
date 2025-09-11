@@ -124,9 +124,10 @@ export const CalendarPage: React.FC = () => {
   eventClick={handleEventClick}
   headerToolbar={{
     left: "prev,next today",
-    center: "title",
+    // center: "title",
     right: "dayGridMonth,timeGridWeek,timeGridDay",
   }}
+  
   height="auto"
   contentHeight="auto"
   nowIndicator
@@ -140,7 +141,7 @@ export const CalendarPage: React.FC = () => {
     "rounded-md shadow-sm px-1 sm:px-2 py-1 text-xs sm:text-sm"
   }
 />
-  
+
         {/* Demo Buttons */}
         <div className="mt-4 flex flex-wrap gap-2">
           <button
