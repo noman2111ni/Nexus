@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import FullCalendar, { EventInput, DateSelectArg, EventClickArg } from "@fullcalendar/react";
+import FullCalendar, {
+  EventInput,
+  DateSelectArg,
+  EventClickArg,
+} from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -39,7 +43,9 @@ export const CalendarPage: React.FC = () => {
       start: clickInfo.event.start!,
       end: clickInfo.event.end!,
       color: clickInfo.event.backgroundColor || "blue",
-      status: (clickInfo.event.extendedProps.status as MeetingEvent["status"]) || "available",
+      status:
+        (clickInfo.event.extendedProps.status as MeetingEvent["status"]) ||
+        "available",
       description: clickInfo.event.extendedProps.description,
     });
   };
@@ -50,7 +56,18 @@ export const CalendarPage: React.FC = () => {
     setEvents((prev) =>
       prev.map((ev) =>
         ev.id === selectedEvent.id
-          ? { ...ev, status, color: status === "pending" ? "#F59E0B" : status === "confirmed" ? "#10B981" : status === "declined" ? "#EF4444" : "#3B82F6" }
+          ? {
+              ...ev,
+              status,
+              color:
+                status === "pending"
+                  ? "#F59E0B"
+                  : status === "confirmed"
+                  ? "#10B981"
+                  : status === "declined"
+                  ? "#EF4444"
+                  : "#3B82F6",
+            }
           : ev
       )
     );
@@ -63,7 +80,9 @@ export const CalendarPage: React.FC = () => {
     const newTitle = prompt("Edit meeting title:", selectedEvent.title);
     if (newTitle) {
       setEvents((prev) =>
-        prev.map((ev) => (ev.id === selectedEvent.id ? { ...ev, title: newTitle } : ev))
+        prev.map((ev) =>
+          ev.id === selectedEvent.id ? { ...ev, title: newTitle } : ev
+        )
       );
       setSelectedEvent((prev) => prev && { ...prev, title: newTitle });
     }
@@ -86,48 +105,73 @@ export const CalendarPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl p-6">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Meeting Scheduler</h2>
-        <p className="text-gray-500 mb-4">Add availability and manage meetings directly from the calendar.</p>
+    <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
+      <div className="w-full max-w-7xl mx-auto bg-white rounded-2xl shadow-xl p-4 sm:p-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          Meeting Scheduler
+        </h2>
+        <p className="text-gray-500 mb-4 text-sm sm:text-base">
+          Add availability and manage meetings directly from the calendar.
+        </p>
 
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
-          selectable
-          editable
-          select={handleDateSelect}
-          events={events}
-          eventClick={handleEventClick}
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
-          }}
-          height="auto"
-          eventColor="inherit"
-          eventBackgroundColor={(info) => info.event.extendedProps.color as string}
-        />
-
+          <FullCalendar
+  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+  initialView="timeGridWeek"
+  selectable
+  editable
+  select={handleDateSelect}
+  events={events}
+  eventClick={handleEventClick}
+  headerToolbar={{
+    left: "prev,next today",
+    center: "title",
+    right: "dayGridMonth,timeGridWeek,timeGridDay",
+  }}
+  height="auto"
+  contentHeight="auto"
+  nowIndicator
+  eventColor="#3B82F6"       // Tailwind blue-600
+  eventTextColor="#FFFFFF"   // White text
+  dayHeaderClassNames={() =>
+    "bg-gray-100 text-gray-700 font-semibold text-xs sm:text-sm py-2"
+  }
+  slotLabelClassNames={() => "text-xs sm:text-sm text-gray-500"}
+  eventClassNames={() =>
+    "rounded-md shadow-sm px-1 sm:px-2 py-1 text-xs sm:text-sm"
+  }
+/>
+  
         {/* Demo Buttons */}
-        <div className="mt-4 flex flex-wrap gap-3">
+        <div className="mt-4 flex flex-wrap gap-2">
           <button
-            className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+            className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
             onClick={() =>
               setEvents([
                 ...events,
-                { id: String(events.length + 1), title: "Demo Pending Meeting", start: new Date(), color: "#F59E0B", status: "pending" },
+                {
+                  id: String(events.length + 1),
+                  title: "Demo Pending Meeting",
+                  start: new Date(),
+                  color: "#F59E0B",
+                  status: "pending",
+                },
               ])
             }
           >
             Add Demo Pending Meeting
           </button>
           <button
-            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+            className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
             onClick={() =>
               setEvents([
                 ...events,
-                { id: String(events.length + 1), title: "Demo Confirmed Meeting", start: new Date(), color: "#10B981", status: "confirmed" },
+                {
+                  id: String(events.length + 1),
+                  title: "Demo Confirmed Meeting",
+                  start: new Date(),
+                  color: "#10B981",
+                  status: "confirmed",
+                },
               ])
             }
           >
@@ -138,29 +182,38 @@ export const CalendarPage: React.FC = () => {
 
       {/* Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-xl p-6 w-96 max-w-full animate-fadeIn">
-            <h3 className="text-xl font-bold text-gray-900">{selectedEvent.title}</h3>
-            <p className="text-gray-600 mt-2">Status: <span className="capitalize font-medium">{selectedEvent.status}</span></p>
-            {selectedEvent.description && <p className="text-gray-600 mt-2">{selectedEvent.description}</p>}
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm sm:max-w-md animate-fadeIn">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+              {selectedEvent.title}
+            </h3>
+            <p className="text-gray-600 mt-2">
+              Status:{" "}
+              <span className="capitalize font-medium">
+                {selectedEvent.status}
+              </span>
+            </p>
+            {selectedEvent.description && (
+              <p className="text-gray-600 mt-2">{selectedEvent.description}</p>
+            )}
 
             <div className="flex flex-wrap gap-2 mt-4">
               {selectedEvent.status === "available" && (
                 <>
                   <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition"
+                    className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition"
                     onClick={sendRequest}
                   >
                     Send Request
                   </button>
                   <button
-                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition"
+                    className="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition"
                     onClick={editEventTitle}
                   >
                     Edit
                   </button>
                   <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition"
+                    className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition"
                     onClick={deleteEvent}
                   >
                     Delete
@@ -170,13 +223,13 @@ export const CalendarPage: React.FC = () => {
               {selectedEvent.status === "pending" && (
                 <>
                   <button
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition"
+                    className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition"
                     onClick={() => updateEventStatus("confirmed")}
                   >
                     Accept
                   </button>
                   <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition"
+                    className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition"
                     onClick={() => updateEventStatus("declined")}
                   >
                     Decline
@@ -184,7 +237,7 @@ export const CalendarPage: React.FC = () => {
                 </>
               )}
               {selectedEvent.status === "confirmed" && (
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold cursor-not-allowed">
+                <button className="w-full bg-green-600 text-white px-4 py-2 rounded-lg font-semibold cursor-not-allowed">
                   Confirmed
                 </button>
               )}

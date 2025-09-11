@@ -9,24 +9,32 @@ interface Props {
 
 export const MeetingCard: React.FC<Props> = ({ meeting, user, onStatusUpdate }) => {
   const isEntrepreneur = user.role === "entrepreneur" && meeting.entrepreneurId === user.id;
+
   return (
-    <div className="flex justify-between items-center p-2 border rounded">
-      <div>
-        <p className="font-semibold">{meeting.title}</p>
-        <p className="text-sm text-gray-500">{meeting.startTime} - {meeting.endTime}</p>
-        <p className="text-sm text-gray-500">Status: {meeting.status}</p>
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-4 border rounded-lg shadow-sm bg-white">
+      {/* Meeting Info */}
+      <div className="flex-1">
+        <p className="font-semibold text-gray-800 text-sm sm:text-base">{meeting.title}</p>
+        <p className="text-xs sm:text-sm text-gray-500">
+          {meeting.startTime} - {meeting.endTime}
+        </p>
+        <p className="text-xs sm:text-sm text-gray-500">
+          Status: <span className="capitalize font-medium">{meeting.status}</span>
+        </p>
       </div>
+
+      {/* Action Buttons (only entrepreneur) */}
       {isEntrepreneur && meeting.status === "pending" && (
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <button
             onClick={() => onStatusUpdate(meeting.id, "accepted")}
-            className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+            className="w-full sm:w-auto px-3 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition"
           >
             Accept
           </button>
           <button
             onClick={() => onStatusUpdate(meeting.id, "declined")}
-            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+            className="w-full sm:w-auto px-3 py-2 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition"
           >
             Decline
           </button>
